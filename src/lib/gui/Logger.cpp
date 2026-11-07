@@ -52,6 +52,10 @@ QString printLine(FILE *out, const QString &type, const QString &message, const 
 
 void Logger::handleMessage(const QtMsgType type, const QString &fileLine, const QString &message)
 {
+  if (message.contains("qt.gui.icc")) {
+    return;
+  }
+
   auto mutatedType = type;
   if (kForceDebugMessages.contains(message)) {
     mutatedType = QtDebugMsg;
