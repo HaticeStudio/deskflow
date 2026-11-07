@@ -464,7 +464,7 @@ private:
 
   // computer locking (former scroll lock)
   bool m_lockedToComputer = false;
-
+  mutable bool m_shownLockWarning = false;
   bool m_defaultLockToComputerState = false;
   bool m_disableLockToComputer = false;
   bool m_enableClipboard = true;

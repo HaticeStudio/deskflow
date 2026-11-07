@@ -144,9 +144,11 @@ Server::Server(ServerConfig &config, PrimaryClient *primaryClient, deskflow::Com
   if (!m_disableLockToComputer && (m_primaryClient->getToggleMask() & KeyModifierScrollLock)) {
     LOG_INFO("scroll lock is on, locking cursor to computer");
     m_lockedToComputer = true;
+    m_shownLockWarning = false;
   } else if (m_defaultLockToComputerState) {
     LOG_INFO("default computer lock is on, locking cursor to computer");
     m_lockedToComputer = true;
+    m_shownLockWarning = false;
   }
 }
 
@@ -371,7 +373,8 @@ bool Server::isLockedToComputer() const
 
   // locked if we say we're locked
   if (isLockedToComputerServer()) {
-    if (!m_defaultLockToComputerState) {
+    if (!m_shownLockWarning) {
+      m_shownLockWarning = true;
       LOG_INFO("cursor is locked to computer, check scroll lock key");
     }
     return true;
