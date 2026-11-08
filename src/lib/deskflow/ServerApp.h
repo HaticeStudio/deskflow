@@ -90,6 +90,10 @@ public:
   {
     return m_server;
   }
+  PrimaryClient *getPrimaryClient()
+  {
+    return m_primaryClient;
+  }
 
   //
   // Static functions

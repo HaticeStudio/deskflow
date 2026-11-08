@@ -68,6 +68,10 @@ public:
   {
     return m_client;
   }
+  deskflow::Computer *getComputer()
+  {
+    return m_clientComputer;
+  }
 
   //
   // Static functions

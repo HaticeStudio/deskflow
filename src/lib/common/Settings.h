@@ -123,6 +123,13 @@ public:
     inline static const auto XdpRestoreToken = QStringLiteral("server/xdpRestoreToken");
   };
 
+  struct Mcp
+  {
+    inline static const auto Enabled = QStringLiteral("mcp/enabled");
+    inline static const auto SocketName = QStringLiteral("mcp/socketName");
+    inline static const auto TimeoutMs = QStringLiteral("mcp/timeoutMs");
+  };
+
   struct Computer
   {
     inline static const auto Aliases = QStringLiteral("computer_%1/aliases");
@@ -270,6 +277,7 @@ private:
     , QStringLiteral("security")
     , QStringLiteral("server")
     , QStringLiteral("internalConfig")
+    , QStringLiteral("mcp")
   };
 
   inline static const QStringList m_validKeys = {
@@ -335,6 +343,9 @@ private:
     , Server::SwitchDelay
     , Server::SwitchDoubleTap
     , Server::Win32KeepForeground
+    , Mcp::Enabled
+    , Mcp::SocketName
+    , Mcp::TimeoutMs
   };
 
   // When checking the default values this list contains the ones that default to false.
@@ -363,6 +374,7 @@ private:
     , Server::ExternalConfig
     , Server::RelativeMouseMoves
     , Server::XdpClipboardRetried
+    , Mcp::Enabled
   };
 
   // When checking the default values this list contains the ones that default to true.

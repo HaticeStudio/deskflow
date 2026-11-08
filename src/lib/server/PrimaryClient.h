@@ -138,6 +138,10 @@ public:
   {
     return true;
   }
+  deskflow::Computer *getComputer() const
+  {
+    return m_computer;
+  }
 
 private:
   deskflow::Computer *m_computer;

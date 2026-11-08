@@ -343,6 +343,12 @@ QVariant Settings::defaultValue(const QString &key)
   if (key == Core::Port)
     return 24800;
 
+  if (key == Mcp::SocketName)
+    return QStringLiteral("%1-mcp").arg(kAppId);
+
+  if (key == Mcp::TimeoutMs)
+    return 5000;
+
   if (key == Core::ProcessMode) {
 #ifdef Q_OS_WIN
     if (!Settings::isPortableMode())

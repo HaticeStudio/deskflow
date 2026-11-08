@@ -238,5 +238,10 @@ enum class EventTypes : uint32_t
 
   /// Stop libei
   EISessionClosed,
+
+  /** MCP tool call to execute on the core thread.
+      The event data is a pointer to deskflow::mcp::ToolCallData.
+  */
+  McpToolCall,
 };
 } // namespace deskflow

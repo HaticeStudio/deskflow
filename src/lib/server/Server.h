@@ -200,6 +200,12 @@ public:
   void sendConnectedClientsIpc() const;
   size_t getMaximumClipboardSizeBytes() const;
 
+  //! Event target for ServerSwitchToComputer / ServerLockCursorToComputer events (used by MCP)
+  void *switchEventTarget() const
+  {
+    return m_inputFilter;
+  }
+
   //@}
 
 private:
