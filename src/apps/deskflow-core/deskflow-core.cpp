@@ -17,6 +17,7 @@
 #include "deskflow/ServerApp.h"
 #include "deskflow/ipc/CoreIpcServer.h"
 #include "mcp/McpServer.h"
+#include "mcp/McpStdioBridge.h"
 
 #if defined(Q_OS_WIN)
 #include "arch/win32/ArchMiscWindows.h"
@@ -73,6 +74,12 @@ int main(int argc, char **argv)
 #if defined(Q_OS_WIN)
   ArchMiscWindows::setInstanceWin32(GetModuleHandle(nullptr));
 #endif
+
+  // `deskflow-core mcp-bridge`: stdio <-> MCP socket relay for AI agents (see mcp/McpStdioBridge.h).
+  // Handled before the GUI-style QApplication and the single-instance check below.
+  if (argc > 1 && QString::fromLocal8Bit(argv[1]) == QLatin1String("mcp-bridge")) {
+    return deskflow::mcp::runStdioBridge(argc - 1, argv + 1);
+  }
 
   QApplication::setApplicationName(QStringLiteral("%1 Core").arg(kAppName));
   QApplication app(argc, argv);

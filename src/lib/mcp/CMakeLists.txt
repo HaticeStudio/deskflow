@@ -14,6 +14,8 @@ endif()
 add_library(${lib_name} STATIC ${PLATFORM_CODE}
   McpBridge.cpp
   McpBridge.h
+  McpStdioBridge.cpp
+  McpStdioBridge.h
   McpServer.cpp
   McpServer.h
   McpTools.cpp
