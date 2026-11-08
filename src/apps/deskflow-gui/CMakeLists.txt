@@ -17,11 +17,13 @@ if(WIN32)
   set(platform_extra deskflow.rc)
 elseif(BUILD_OSX_BUNDLE)
   #setup our bundle plist file
+  # Fork branding: a distinct bundle id and icon so macOS TCC does not confuse
+  # this build with upstream Deskflow (see docs/dev/mcp.md).
   set(BUNDLE_EXECUTABLE_NAME "${target}")
-  set(BUNDLE_BUNDLE_NAME "${target}")
-  set(BUNDLE_DISPLAY_NAME "${target}")
-  set(BUNDLE_GUI_IDENTIFIER "${CMAKE_PROJECT_REV_FQDN}")
-  set(BUNDLE_ICON_FILE ${target}.icns)
+  set(BUNDLE_BUNDLE_NAME "${FORK_APP_NAME}")
+  set(BUNDLE_DISPLAY_NAME "${FORK_APP_NAME}")
+  set(BUNDLE_GUI_IDENTIFIER "${FORK_BUNDLE_ID}")
+  set(BUNDLE_ICON_FILE ${FORK_APP_NAME}.icns)
   set(BUNDLE_INFO_STRING "${CMAKE_PROJECT_DESCRIPTION}")
   set(BUNDLE_COPYRIGHT "${CMAKE_PROJECT_COPYRIGHT}")
 
@@ -31,7 +33,7 @@ elseif(BUILD_OSX_BUNDLE)
     @ONLY
   )
 
-  set(platform_extra ../res/Deskflow.icns)
+  set(platform_extra ../res/${FORK_APP_NAME}.icns)
   set_source_files_properties(${platform_extra} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 endif()
 

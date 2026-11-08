@@ -104,6 +104,9 @@ set(CMAKE_PROJECT_VENDOR "${CMAKE_PROJECT_PROPER_NAME} Devs")
 set(CMAKE_PROJECT_COPYRIGHT "(C) 2024-2026 ${CMAKE_PROJECT_VENDOR}")
 set(CMAKE_PROJECT_CONTACT "${CMAKE_PROJECT_PROPER_NAME} <maintainers@deskflow.org>")
 set(CMAKE_PROJECT_REV_FQDN "org.deskflow.deskflow")
+# Fork branding (HaticeStudio/deskflow mcp branch): bundle name/id/icon only.
+set(FORK_APP_NAME "PeerDesk" CACHE STRING "macOS bundle display name of this fork")
+set(FORK_BUNDLE_ID "com.haticestudio.peerdesk" CACHE STRING "macOS bundle identifier of this fork")
 
 #Unset the vars used in the project call
 unset(DESKFLOW_VERSION_MAJOR)
