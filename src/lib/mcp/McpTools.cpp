@@ -417,9 +417,13 @@ void McpTools::registerLocalTools()
       Clipboard cb;
       if (!pc->getClipboard(kClipboardClipboard, &cb))
         return ToolResult::error(QStringLiteral("could not read clipboard"));
-      if (!cb.has(IClipboard::Format::Text))
-        return ToolResult::text(QString());
-      return ToolResult::text(QString::fromStdString(cb.get(IClipboard::Format::Text)));
+      // Clipboard::has/get only answer while the clipboard object is open.
+      if (!cb.open(0))
+        return ToolResult::error(QStringLiteral("could not open clipboard data"));
+      const bool hasText = cb.has(IClipboard::Format::Text);
+      const auto text = hasText ? cb.get(IClipboard::Format::Text) : std::string();
+      cb.close();
+      return ToolResult::text(QString::fromStdString(text));
     });
   });
 
