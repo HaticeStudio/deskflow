@@ -128,9 +128,15 @@ int main(int argc, char **argv)
   );
   ipcServer->listen();
 
-  // MCP endpoint for AI agents (local socket, opt-in via mcp/enabled)
-  auto *mcpServer = new deskflow::mcp::McpServer(&events, coreApp, &app); // NOSONAR - Qt managed
-  mcpServer->start();
+  // MCP endpoint for AI agents (local socket, opt-in via mcp/enabled).
+  // Runs on its own thread with its own event loop so it does not depend on the
+  // main Qt loop, which the client mode has been seen to leave early.
+  QThread mcpThread;
+  mcpThread.setObjectName(QStringLiteral("mcp"));
+  auto *mcpServer = new deskflow::mcp::McpServer(&events, coreApp); // deleted below
+  mcpServer->moveToThread(&mcpThread);
+  QObject::connect(&mcpThread, &QThread::started, mcpServer, &deskflow::mcp::McpServer::start);
+  mcpThread.start();
 
   QThread coreThread;
   QObject::connect(&coreThread, &QThread::finished, &app, &QApplication::quit);
@@ -138,7 +144,10 @@ int main(int argc, char **argv)
 
   int exitCode = QApplication::exec();
   coreThread.wait();
-  mcpServer->shutdown(); // before `events` goes out of scope
+  QMetaObject::invokeMethod(mcpServer, &deskflow::mcp::McpServer::shutdown, Qt::BlockingQueuedConnection);
+  mcpThread.quit();
+  mcpThread.wait();
+  delete mcpServer; // before `events` goes out of scope
 
   if (exitCode == s_exitSuccess) {
     exitCode = coreApp->getExitCode();

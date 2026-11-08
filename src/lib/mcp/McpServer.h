@@ -37,11 +37,15 @@ public:
   McpServer(IEventQueue *events, App *app, QObject *parent = nullptr);
   ~McpServer() override;
 
+public Q_SLOTS:
   //! Start listening if Settings::Mcp::Enabled is true. Returns true when listening.
+  //! Must run on the thread that owns this object (creates the QLocalServer there).
   bool start();
 
   //! Stop serving and detach from the core event queue; call before the queue is destroyed.
   void shutdown();
+
+public:
 
   QString socketName() const
   {

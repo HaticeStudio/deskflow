@@ -30,21 +30,22 @@ constexpr int kInvalidParams = -32602;
 
 McpServer::McpServer(IEventQueue *events, App *app, QObject *parent)
     : QObject(parent),
-      m_server{new QLocalServer(this)},
+      m_server{nullptr},
       m_socketName(Settings::value(Settings::Mcp::SocketName).toString()),
       m_bridge(std::make_unique<McpBridge>(events)),
       m_tools(std::make_unique<McpTools>(m_bridge.get(), app, Settings::value(Settings::Mcp::TimeoutMs).toInt()))
 {
-  m_server->setSocketOptions(QLocalServer::UserAccessOption);
-  connect(m_server, &QLocalServer::newConnection, this, &McpServer::handleNewConnection);
 }
 
 McpServer::~McpServer() = default;
 
 void McpServer::shutdown()
 {
-  if (m_server->isListening())
+  if (m_server != nullptr && m_server->isListening())
     m_server->close();
+  for (auto *socket : m_buffers.keys())
+    socket->disconnectFromServer();
+  m_buffers.clear();
   m_bridge->detach();
 }
 
@@ -53,6 +54,11 @@ bool McpServer::start()
   if (!Settings::value(Settings::Mcp::Enabled).toBool()) {
     LOG_DEBUG("mcp server disabled (set mcp/enabled=true in settings to enable)");
     return false;
+  }
+  if (m_server == nullptr) {
+    m_server = new QLocalServer(this);
+    m_server->setSocketOptions(QLocalServer::UserAccessOption);
+    connect(m_server, &QLocalServer::newConnection, this, &McpServer::handleNewConnection);
   }
   QLocalServer::removeServer(m_socketName);
   if (!m_server->listen(m_socketName)) {
