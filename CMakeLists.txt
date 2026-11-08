@@ -99,7 +99,9 @@ project(
 )
 
 # Define Additional "PROJECT" vars for packaging and metadata
-set(CMAKE_PROJECT_PROPER_NAME "Deskflow")
+# Fork: the user-facing name (window titles, ~/Library/<name>/<name>.conf) is PeerDesk.
+# kAppId stays "deskflow" so sockets, log names and the protocol are unchanged.
+set(CMAKE_PROJECT_PROPER_NAME "PeerDesk")
 set(CMAKE_PROJECT_VENDOR "${CMAKE_PROJECT_PROPER_NAME} Devs")
 set(CMAKE_PROJECT_COPYRIGHT "(C) 2024-2026 ${CMAKE_PROJECT_VENDOR}")
 set(CMAKE_PROJECT_CONTACT "${CMAKE_PROJECT_PROPER_NAME} <maintainers@deskflow.org>")
