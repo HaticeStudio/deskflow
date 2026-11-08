@@ -13,7 +13,7 @@ computers. Human KVM behaviour of Deskflow is unchanged.
   the Accessibility / Input Monitoring permissions. Reusing it means one binary,
   one set of TCC grants.
 - The server already knows all connected computers and has a `switchToScreen`
-  action (`EventTypes::ServerSwitchToScreen` + `Server::SwitchToScreenInfo`).
+  action (`EventTypes::ServerSwitchToComputer` + `Server::SwitchToComputerInfo`).
   Posting that event is thread-safe and needs no private access.
 - The GUI talks to the core over a `QLocalServer` named `kCoreIpcName` with
   newline-delimited `key=value` messages (`src/lib/deskflow/ipc/IpcServer.cpp`).
@@ -66,8 +66,8 @@ Server only:
 | tool                 | args           | note                                        |
 |----------------------|----------------|---------------------------------------------|
 | `list_computers`     |                | from `Server::getClients`                   |
-| `switch_to_computer` | `name`         | posts `ServerSwitchToScreen`                |
-| `lock_to_computer`   | `locked: bool` | posts `ServerLockCursorToScreen`            |
+| `switch_to_computer` | `name`         | posts `ServerSwitchToComputer`                |
+| `lock_to_computer`   | `locked: bool` | posts `ServerLockCursorToComputer`            |
 
 Coordinates are in that machine's own screen space (same as `getShape`).
 
