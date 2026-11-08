@@ -50,6 +50,9 @@ public:
   //! Execute \p fn on the core thread. Returns false if it did not run within \p timeoutMs.
   bool runOnCore(const std::function<void()> &fn, int timeoutMs) const;
 
+  //! Unregister from the event queue while it is still alive (call before the queue is destroyed).
+  void detach();
+
   IEventQueue *events() const
   {
     return m_events;

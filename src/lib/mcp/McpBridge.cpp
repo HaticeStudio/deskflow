@@ -40,7 +40,24 @@ McpBridge::McpBridge(IEventQueue *events) : m_events(events)
 
 McpBridge::~McpBridge()
 {
-  m_events->removeHandler(EventTypes::McpToolCall, this);
+  // The core EventQueue may already be gone when Qt tears down the McpServer
+  // (QApplication destroys its children after main()'s locals). Removing the
+  // handler is only a courtesy, so never let it throw out of a destructor.
+  try {
+    if (m_events != nullptr)
+      m_events->removeHandler(EventTypes::McpToolCall, this);
+  } catch (...) { // NOSONAR - destructor must not throw
+  }
+}
+
+void McpBridge::detach()
+{
+  try {
+    if (m_events != nullptr)
+      m_events->removeHandler(EventTypes::McpToolCall, this);
+  } catch (...) { // NOSONAR
+  }
+  m_events = nullptr;
 }
 
 bool McpBridge::runOnCore(const std::function<void()> &fn, int timeoutMs) const

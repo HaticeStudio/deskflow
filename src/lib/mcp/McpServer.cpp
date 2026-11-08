@@ -41,6 +41,13 @@ McpServer::McpServer(IEventQueue *events, App *app, QObject *parent)
 
 McpServer::~McpServer() = default;
 
+void McpServer::shutdown()
+{
+  if (m_server->isListening())
+    m_server->close();
+  m_bridge->detach();
+}
+
 bool McpServer::start()
 {
   if (!Settings::value(Settings::Mcp::Enabled).toBool()) {

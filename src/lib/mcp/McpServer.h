@@ -40,6 +40,9 @@ public:
   //! Start listening if Settings::Mcp::Enabled is true. Returns true when listening.
   bool start();
 
+  //! Stop serving and detach from the core event queue; call before the queue is destroyed.
+  void shutdown();
+
   QString socketName() const
   {
     return m_socketName;

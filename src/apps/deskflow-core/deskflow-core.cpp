@@ -138,6 +138,7 @@ int main(int argc, char **argv)
 
   int exitCode = QApplication::exec();
   coreThread.wait();
+  mcpServer->shutdown(); // before `events` goes out of scope
 
   if (exitCode == s_exitSuccess) {
     exitCode = coreApp->getExitCode();
