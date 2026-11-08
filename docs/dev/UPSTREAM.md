@@ -13,7 +13,7 @@ git rebase <new-tag> mcp
 # fix conflicts, rebuild, run through docs/dev/mcp.md milestone 5 checklist
 ```
 
-Files the fork touches outside `src/lib/mcp/` and `src/apps/deskflow-mcp/`:
+Files the fork touches outside `src/lib/mcp/`:
 `src/apps/deskflow-core/deskflow-core.cpp`, `src/lib/base/EventTypes.h`,
 `src/lib/deskflow/App.cpp`, `src/lib/common/Settings.h`, `CMakeLists.txt`,
-`src/lib/CMakeLists.txt`, `src/apps/CMakeLists.txt`.
+`src/lib/CMakeLists.txt`, `src/apps/deskflow-core/CMakeLists.txt`.

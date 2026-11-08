@@ -29,8 +29,7 @@ src/lib/mcp/                       new static lib "mcp" (Qt Core + Network)
   McpTools.{h,cpp}                 tool registry: name, JSON schema, handler
   McpBridge.{h,cpp}                hands tool calls to the core thread and waits for the result
 src/lib/platform/OSXScreenshot.mm  CGDisplay / ScreenCaptureKit capture -> PNG bytes (macOS only)
-src/apps/deskflow-mcp/             tiny console binary: stdio <-> local socket bridge, so
-                                   Claude Code can run `ssh host deskflow-mcp`
+(stdio bridge lives in HaticeStudio/peer-mcp, not in this repo)
 ```
 
 `deskflow-core.cpp` creates `McpServer` right after `CoreIpcServer` and gives it
@@ -75,8 +74,9 @@ Coordinates are in that machine's own screen space (same as `getShape`).
 
 - Local socket only, mode 0600 for the current user (not `WorldAccessOption`).
   Never a TCP port.
-- Remote use goes through ssh: Claude Code MCP config
-  `{"command": "ssh", "args": ["metal", "/Applications/Deskflow.app/Contents/MacOS/deskflow-mcp"]}`.
+- Remote use goes through ssh with the stdio bridge from
+  https://github.com/HaticeStudio/peer-mcp:
+  `{"command": "ssh", "args": ["metal", "python3", "peer-mcp/bridge/peer_mcp_bridge.py"]}`.
 - `screenshot` needs the macOS Screen Recording permission for `deskflow-core`;
   the first call will trigger the system prompt once.
 - Tool calls are logged at INFO with tool name and arg summary (no screenshot
@@ -106,7 +106,7 @@ timeoutMs=5000
 1. Baseline build of unmodified v1.27.0 on this Mac with Homebrew Qt. Done when
    the built `Deskflow.app` runs server mode and metal connects.
 2. `McpServer` with `initialize`, `ping`, `tools/list`, `screen_info`,
-   `screenshot`; `deskflow-mcp` bridge; Claude Code sees the tools over ssh.
+   `screenshot`; peer-mcp bridge; Claude Code sees the tools over ssh.
 3. Input tools on the local machine via `IPlatformScreen::fake*`.
 4. Server tools (`list_computers`, `switch_to_computer`, `lock_to_computer`).
 5. Deploy to metal, Screen Recording grant, end-to-end: Claude takes a screenshot
