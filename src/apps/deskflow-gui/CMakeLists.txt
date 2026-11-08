@@ -3,7 +3,9 @@
 # SPDX-License-Identifier: MIT
 
 if(APPLE)
-  set(target Deskflow)
+  # The bundle and GUI executable carry the proper name (PeerDesk in this fork);
+  # other CMake files reference the bundle via $<TARGET_BUNDLE_DIR:${CMAKE_PROJECT_PROPER_NAME}>.
+  set(target ${CMAKE_PROJECT_PROPER_NAME})
 else()
   set(target deskflow)
 endif()
